@@ -1,4 +1,4 @@
-package com.ratz.ecommerce.com.ratz.ecommerce.entity;
+package com.ratz.ecommerce.entity;
 
 
 

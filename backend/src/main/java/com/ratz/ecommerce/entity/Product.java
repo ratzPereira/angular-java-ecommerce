@@ -1,4 +1,4 @@
-package com.ratz.ecommerce.com.ratz.ecommerce.entity;
+package com.ratz.ecommerce.entity;
 
 
 import lombok.Data;
@@ -37,7 +37,7 @@ public class Product {
     @Column(name="active")
     private boolean active;
 
-    @Column(name="unit_in_stock")
+    @Column(name="units_in_stock")
     private int unitsInStock;
 
     @Column(name="date_created")
