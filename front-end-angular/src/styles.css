@@ -757,6 +757,7 @@ table.table.table-bordered th {
 a.primary-btn {
   background: #05143f;
   padding: 7px 20px;
+  text-decoration: none;
   text-align: center;
   display: inline-block;
   color: #fff;
@@ -766,7 +767,8 @@ a.primary-btn {
 }
 a.primary-btn:hover {
   background: #0da8e4;
-  color: #fff;
+  text-decoration: none;
+  color: black;
 }
 
 .active-link {
@@ -991,7 +993,7 @@ footer ul li {
     text-align: center;
   }
   .product-box {
-    text-align: centerg;
+    text-align: center;
   }
   .page-container {
     position: relative;
