@@ -17,7 +17,7 @@ export class ProductListComponent implements OnInit {
 
   //new properties for pagination
   thePageNumber: number = 1;
-  thePageSize: number = 10;
+  thePageSize: number = 5;
   theTotalElements: number = 0;
 
   constructor(
@@ -100,5 +100,11 @@ export class ProductListComponent implements OnInit {
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     };
+  }
+
+  updatePageSize(pageSize: number) {
+    this.thePageSize = pageSize; // we make an assignment,
+    this.thePageNumber = 1; // here we reset the page size to 1, because when the user change the size, we want to reset the page number
+    this.listProducts(); // here we call the listProducts() to kind of refresh the page view based on this new information, page size,page number
   }
 }
