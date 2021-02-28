@@ -15,4 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //Spring Data REST automatically expose endpoint
     Page<Product> findByCategoryId(@RequestParam("id") Long id, Pageable pageable);
 
+
+    //behind the scenes spring will execute SELECT * FROM product where p.name LIKE CONCAT("%", :name, "%")
+    //Spring Data REST automatically expose endpoint
+    Page<Product> findByNameContaining(@RequestParam("name") String name, Pageable pageable);
+
 }
