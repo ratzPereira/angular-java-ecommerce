@@ -123,4 +123,10 @@ export class ProductListComponent implements OnInit {
     this.thePageNumber = 1; // here we reset the page size to 1, because when the user change the size, we want to reset the page number
     this.listProducts(); // here we call the listProducts() to kind of refresh the page view based on this new information, page size,page number
   }
+
+  addToCart(theProduct: Product) {
+    console.log(
+      `Adding to cart the item ${theProduct.name} with the price of ${theProduct.unitPrice}`
+    );
+  }
 }
