@@ -8,7 +8,7 @@ import {
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { EBuyFormService } from '../../services/e-buy-form.service';
-import { EBuyShopValidators } from '../../validatores/ebuy-shop-validators';
+import { EBuyShopValidators } from '../../validators/ebuy-shop-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -91,12 +91,22 @@ export class CheckoutComponent implements OnInit {
         ]),
       }),
       creditCard: this.formBuilder.group({
-        cardType: [''],
-        nameOnCard: [''],
-        cardNumber: [''],
-        securityCode: [''],
-        expirationMonth: [''],
-        expirationYear: [''],
+        cardType: new FormControl('', [Validators.required]),
+        nameOnCard: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          EBuyShopValidators.notOnlyWhiteSpaces,
+        ]),
+        cardNumber: new FormControl('', [
+          Validators.pattern('[0-9]{16}'),
+          Validators.required,
+        ]),
+        securityCode: new FormControl('', [
+          Validators.pattern('[0-9]{3}'),
+          Validators.required,
+        ]),
+        expirationMonth: new FormControl('', [Validators.required]),
+        expirationYear: new FormControl('', [Validators.required]),
       }),
     });
 
@@ -125,7 +135,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  //getters
+  // customer getters
   get firstName() {
     return this.checkoutFormGroup.get('customer.firstName');
   }
@@ -135,6 +145,8 @@ export class CheckoutComponent implements OnInit {
   get email() {
     return this.checkoutFormGroup.get('customer.email');
   }
+
+  //shipping address getters
   get shippingAddressCountry() {
     return this.checkoutFormGroup.get('shippingAddress.country');
   }
@@ -150,6 +162,8 @@ export class CheckoutComponent implements OnInit {
   get shippingAddressState() {
     return this.checkoutFormGroup.get('shippingAddress.state');
   }
+
+  //billing address getters
   get billingAddressCountry() {
     return this.checkoutFormGroup.get('billingAddress.country');
   }
@@ -165,6 +179,29 @@ export class CheckoutComponent implements OnInit {
   get billingAddressState() {
     return this.checkoutFormGroup.get('billingAddress.state');
   }
+
+  //credit card getters
+  get creditCardType() {
+    return this.checkoutFormGroup.get('creditCard.cardType');
+  }
+
+  get creditCardName() {
+    return this.checkoutFormGroup.get('creditCard.nameOnCard');
+  }
+  get creditCardNumber() {
+    return this.checkoutFormGroup.get('creditCard.cardNumber');
+  }
+  get creditCardSecurityCode() {
+    return this.checkoutFormGroup.get('creditCard.securityCode');
+  }
+  get creditCardExpirationMonth() {
+    return this.checkoutFormGroup.get('creditCard.expirationMonth');
+  }
+  get creditCardExpirationYear() {
+    return this.checkoutFormGroup.get('creditCard.expirationYear');
+  }
+
+  ///////////////
 
   copyShippingAddressToBillingAddress(event) {
     if (event.target.checked) {
