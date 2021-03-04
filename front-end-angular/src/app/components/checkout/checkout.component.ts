@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
+import { Country } from 'src/app/common/country';
+import { State } from 'src/app/common/state';
 import { EBuyFormService } from '../../services/e-buy-form.service';
-import { Country } from '../../common/country';
-import { State } from '../../common/state';
 
 @Component({
   selector: 'app-checkout',
@@ -12,71 +17,95 @@ import { State } from '../../common/state';
 export class CheckoutComponent implements OnInit {
   checkoutFormGroup: FormGroup;
 
-  totalPrice: number = 0.0;
+  totalPrice: number = 0;
   totalQuantity: number = 0;
 
-  creditCardMonths: number[] = [];
   creditCardYears: number[] = [];
+  creditCardMonths: number[] = [];
 
   countries: Country[] = [];
+
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private eBuyFormService: EBuyFormService
+    private eBuyFromService: EBuyFormService
   ) {}
 
   ngOnInit(): void {
-    //populate countries
-    this.eBuyFormService.getCountries().subscribe((data) => {
-      console.log(`Retrived Countries` + JSON.stringify(data));
-      this.countries = data;
-    });
-
-    //populate credit card months
-    const startMonth: number = new Date().getMonth() + 1;
-
-    this.eBuyFormService.getCreditCardMonths(startMonth).subscribe((data) => {
-      this.creditCardMonths = data;
-    });
-
-    //populate credit card years
-    this.eBuyFormService.getCreditCardYears().subscribe((data) => {
-      this.creditCardYears = data;
-    });
-
-    //building forms
     this.checkoutFormGroup = this.formBuilder.group({
-      //customer is the Key for this group
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: [''],
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ]),
       }),
       shippingAddress: this.formBuilder.group({
-        country: [''],
         street: [''],
         city: [''],
         state: [''],
+        country: [''],
         zipCode: [''],
       }),
       billingAddress: this.formBuilder.group({
-        country: [''],
         street: [''],
         city: [''],
         state: [''],
+        country: [''],
         zipCode: [''],
       }),
       creditCard: this.formBuilder.group({
         cardType: [''],
-        cardName: [''],
+        nameOnCard: [''],
         cardNumber: [''],
         securityCode: [''],
         expirationMonth: [''],
         expirationYear: [''],
       }),
     });
+
+    // populate credit card months
+
+    const startMonth: number = new Date().getMonth() + 1;
+    console.log('startMonth: ' + startMonth);
+
+    this.eBuyFromService.getCreditCardMonths(startMonth).subscribe((data) => {
+      console.log('Retrieved credit card months: ' + JSON.stringify(data));
+      this.creditCardMonths = data;
+    });
+
+    // populate credit card years
+
+    this.eBuyFromService.getCreditCardYears().subscribe((data) => {
+      console.log('Retrieved credit card years: ' + JSON.stringify(data));
+      this.creditCardYears = data;
+    });
+
+    // populate countries
+
+    this.eBuyFromService.getCountries().subscribe((data) => {
+      console.log('Retrieved countries: ' + JSON.stringify(data));
+      this.countries = data;
+    });
+  }
+
+  get firstName() {
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+  get lastName() {
+    return this.checkoutFormGroup.get('customer.lastName');
+  }
+  get email() {
+    return this.checkoutFormGroup.get('customer.email');
   }
 
   copyShippingAddressToBillingAddress(event) {
@@ -85,44 +114,24 @@ export class CheckoutComponent implements OnInit {
         this.checkoutFormGroup.controls.shippingAddress.value
       );
 
-      //bug fixing for states
+      // bug fix for states
       this.billingAddressStates = this.shippingAddressStates;
     } else {
       this.checkoutFormGroup.controls.billingAddress.reset();
 
-      //bug fix for states
+      // bug fix for states
       this.billingAddressStates = [];
     }
   }
 
-  handleMonthsAndYears() {
-    //read the selected year from the form
-    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+  onSubmit() {
+    console.log('Handling the submit button');
 
-    const currentYear: number = new Date().getUTCFullYear();
-    const selectedYear: number = Number(
-      creditCardFormGroup.value.expirationYear
-    );
-
-    //if the current year equals the selected year, then start with current month
-
-    let startMonth: number;
-
-    if (currentYear === selectedYear) {
-      startMonth = new Date().getMonth() + 1;
-    } else {
-      startMonth = 1;
+    if (this.checkoutFormGroup.invalid) {
+      this.checkoutFormGroup.markAllAsTouched();
     }
 
-    this.eBuyFormService.getCreditCardMonths(startMonth).subscribe((data) => {
-      this.creditCardMonths = data;
-    });
-  }
-
-  onSubmit() {
-    console.log('This is submit checkout button');
-    console.log(this.checkoutFormGroup.get('customer')?.value);
-
+    console.log(this.checkoutFormGroup.get('customer').value);
     console.log(
       'The email address is ' +
         this.checkoutFormGroup.get('customer').value.email
@@ -138,6 +147,30 @@ export class CheckoutComponent implements OnInit {
     );
   }
 
+  handleMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(
+      creditCardFormGroup.value.expirationYear
+    );
+
+    // if the current year equals the selected year, then start with the current month
+
+    let startMonth: number;
+
+    if (currentYear === selectedYear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+
+    this.eBuyFromService.getCreditCardMonths(startMonth).subscribe((data) => {
+      console.log('Retrieved credit card months: ' + JSON.stringify(data));
+      this.creditCardMonths = data;
+    });
+  }
+
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.get(formGroupName);
 
@@ -147,7 +180,7 @@ export class CheckoutComponent implements OnInit {
     console.log(`${formGroupName} country code: ${countryCode}`);
     console.log(`${formGroupName} country name: ${countryName}`);
 
-    this.eBuyFormService.getStates(countryCode).subscribe((data) => {
+    this.eBuyFromService.getStates(countryCode).subscribe((data) => {
       if (formGroupName === 'shippingAddress') {
         this.shippingAddressStates = data;
       } else {
