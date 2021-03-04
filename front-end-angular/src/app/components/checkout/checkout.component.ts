@@ -8,6 +8,7 @@ import {
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { EBuyFormService } from '../../services/e-buy-form.service';
+import { EBuyShopValidators } from '../../validatores/ebuy-shop-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -39,10 +40,12 @@ export class CheckoutComponent implements OnInit {
         firstName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
+          EBuyShopValidators.notOnlyWhiteSpaces,
         ]),
         lastName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
+          EBuyShopValidators.notOnlyWhiteSpaces,
         ]),
         email: new FormControl('', [
           Validators.required,
