@@ -9,6 +9,7 @@ import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { EBuyFormService } from '../../services/e-buy-form.service';
 import { EBuyShopValidators } from '../../validators/ebuy-shop-validators';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -31,10 +32,13 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private eBuyFromService: EBuyFormService
+    private eBuyFromService: EBuyFormService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    this.reviewCartDetails();
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -285,5 +289,14 @@ export class CheckoutComponent implements OnInit {
       // select first item by default
       formGroup.get('state').setValue(data[0]);
     });
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalQuantity.subscribe(
+      (totalQuantity) => (this.totalQuantity = totalQuantity)
+    );
+    this.cartService.totalPrice.subscribe(
+      (totalPrice) => (this.totalPrice = totalPrice)
+    );
   }
 }
