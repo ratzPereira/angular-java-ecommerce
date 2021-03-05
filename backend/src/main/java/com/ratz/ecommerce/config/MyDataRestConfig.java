@@ -6,6 +6,7 @@ import com.ratz.ecommerce.entity.Product;
 import com.ratz.ecommerce.entity.ProductCategory;
 import com.ratz.ecommerce.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -23,6 +24,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
 
     private EntityManager entityManager;
+
+    @Value("${allowed.origins}")
+    private String[] theAllowedOrigins;
 
     @Autowired
     public MyDataRestConfig(EntityManager theEntityManager){
@@ -43,7 +47,12 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         // call an internal helper method to expose our category ids
         exposeIds(config);
+
+        //config cors mapping
+        cors.addMapping("/api/**").allowedOrigins(theAllowedOrigins);
     }
+
+
 
     private void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedActions) {
         config.getExposureConfiguration()
