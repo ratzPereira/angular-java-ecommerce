@@ -244,58 +244,58 @@ export class CheckoutComponent implements OnInit {
     order.totalPrice = this.totalPrice;
     order.totalQuantity = this.totalQuantity;
 
-    //get cart items
+    // get cart items
     const cartItems = this.cartService.cartItems;
 
-    //create orderItems for cartItems
+    // create orderItems from cartItems
     let orderItems: OrderItem[] = cartItems.map(
-      (tempItem) => new OrderItem(tempItem)
+      (tempCartItem) => new OrderItem(tempCartItem)
     );
 
     // set up purchase
     let purchase = new Purchase();
 
-    //populate purchase - customer
+    // populate purchase - customer
     purchase.customer = this.checkoutFormGroup.controls['customer'].value;
 
-    //populate purchase - shipping address
+    // populate purchase - shipping address
     purchase.shippingAddress = this.checkoutFormGroup.controls[
       'shippingAddress'
     ].value;
     const shippingState: State = JSON.parse(
       JSON.stringify(purchase.shippingAddress.state)
     );
-    const shippingCountry: State = JSON.parse(
-      JSON.stringify(purchase.shippingAddress.county)
+    const shippingCountry: Country = JSON.parse(
+      JSON.stringify(purchase.shippingAddress.country)
     );
     purchase.shippingAddress.state = shippingState.name;
-    purchase.shippingAddress.county = shippingCountry.name;
+    purchase.shippingAddress.country = shippingCountry.name;
 
-    //populate purchase - billing address
+    // populate purchase - billing address
     purchase.billingAddress = this.checkoutFormGroup.controls[
       'billingAddress'
     ].value;
     const billingState: State = JSON.parse(
       JSON.stringify(purchase.billingAddress.state)
     );
-    const billingCountry: State = JSON.parse(
-      JSON.stringify(purchase.billingAddress.county)
+    const billingCountry: Country = JSON.parse(
+      JSON.stringify(purchase.billingAddress.country)
     );
     purchase.billingAddress.state = billingState.name;
-    purchase.billingAddress.county = billingCountry.name;
+    purchase.billingAddress.country = billingCountry.name;
 
-    //populate purchase - order and orderItems
+    // populate purchase - order and orderItems
     purchase.order = order;
     purchase.orderItems = orderItems;
 
-    //call rest api via the checkoutService
+    // call REST API via the CheckoutService
     this.checkoutService.placeOrder(purchase).subscribe({
       next: (response) => {
         alert(
-          `Your order has beed received.\nOrder tracking number: ${response.orderTrackingNumber}`
+          `Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`
         );
 
-        //reset cart
+        // reset cart
         this.resetCart();
       },
       error: (err) => {
