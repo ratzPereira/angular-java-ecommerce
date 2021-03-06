@@ -1,5 +1,5 @@
 ### Full-Stack E-Commerce Application using Java (Spring) and Angular
 
 
---> Under development <--
+--> MVP Done. need add some styles <--
  
