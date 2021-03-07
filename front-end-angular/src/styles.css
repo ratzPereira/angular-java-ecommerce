@@ -145,7 +145,7 @@ aside.menu-sidebar.d-none.d-lg-block.clr {
  */
 
 .header-desktop {
-  background: #0da8e4;
+  background: #565858;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
@@ -261,11 +261,11 @@ input.au-input.au-input-xl {
 }
 
 .total {
-  background: #205b8d;
+  background: black;
   line-height: 43px;
-  color: #fff;
+  color: wheat;
   border-radius: 30px;
-  border: 1px solid #0da8e4;
+  border: 1px solid white;
   float: left;
   margin-top: 7px;
   padding-left: 17px;
@@ -293,12 +293,12 @@ input.au-input.au-input-xl {
   position: relative;
   right: 0;
   min-width: 95px;
-  color: #fff;
-  border: 1px solid #205b8d;
+  color: white;
+  border: 1px solid white;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 43px;
-  background: #205b8d;
+  background: black;
 }
 
 .au-btn-submit:hover {
@@ -382,6 +382,10 @@ input.au-input.au-input-xl {
   color: #555;
   font-size: 16px;
   padding: 5px 0;
+  text-decoration: none;
+}
+.navbar-sidebar .navbar-list li a:hover {
+  font-size: large;
 }
 
 .navbar-sidebar .navbar-list li a i {
@@ -389,7 +393,7 @@ input.au-input.au-input-xl {
 }
 
 .navbar-sidebar .navbar-list li a:hover {
-  color: #0da8e4;
+  color: black;
 }
 
 /* 
@@ -736,7 +740,7 @@ table.table.table-bordered th {
 .price {
   margin: 15px 0 0;
   font-weight: 800;
-  color: #0da8e4;
+  color: #19191a;
 }
 .detail-section {
   margin-top: 60px;
@@ -755,8 +759,8 @@ table.table.table-bordered th {
 
 .btn-info {
   color: #fff;
-  background-color: #0da8e4 !important;
-  border-color: #0da8e4 !important;
+  background-color: #1a1b1b !important;
+  border-color: #f7f9fa !important;
 }
 a.primary-btn {
   background: #05143f;
@@ -770,9 +774,9 @@ a.primary-btn {
   margin-top: 5px;
 }
 a.primary-btn:hover {
-  background: #0da8e4;
+  background: black;
   text-decoration: none;
-  color: black;
+  color: white;
 }
 
 .active-link {
@@ -940,7 +944,7 @@ footer ul li {
     font-size: 22px;
     float: left;
     margin-top: 16px;
-    color: #205b8d;
+    color: #0a0a0a;
     margin-left: 15px;
   }
   .header-wrap2 {
@@ -1029,7 +1033,7 @@ footer ul li {
     font-size: 18px;
     float: left;
     margin-top: 16px;
-    color: #03a9f4;
+    color: white;
     margin-left: 15px;
   }
   .total span {
@@ -1042,11 +1046,11 @@ footer ul li {
     margin-left: 6px;
   }
   .total {
-    background: #205b8d;
+    background: white;
     line-height: 30px;
-    color: #fff;
+    color: black;
     border-radius: 30px;
-    border: 1px solid #205b8d;
+    border: 1px solid black;
     float: left;
     margin-top: 9px;
     padding-left: 12px;

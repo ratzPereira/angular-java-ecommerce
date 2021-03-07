@@ -2,12 +2,12 @@
   position: relative;
   right: 0px;
   min-width: 85px;
-  color: #fff;
-  border: 10px solid #205b8d;
+  color: black;
+  border: 6px solid white;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 43px;
-  background: #205b8d;
+  background: white;
 }
 
 .login-status-header {
